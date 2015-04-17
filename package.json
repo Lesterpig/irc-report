@@ -1,0 +1,28 @@
+{
+  "name": "irc-report",
+  "version": "0.1.0-dev",
+  "description": "Irc bot to keep an eye in a channel",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lesterpig/irc-report.git"
+  },
+  "keywords": [
+    "irc",
+    "bot",
+    "log",
+    "mail"
+  ],
+  "author": "Lesterpig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lesterpig/irc-report/issues"
+  },
+  "homepage": "https://github.com/Lesterpig/irc-report",
+  "dependencies": {
+    "irc": "^0.3.11"
+  }
+}
