@@ -1,11 +1,12 @@
-var irc  = require("irc");
-var conf = require("./config.js");
-var files = require("./files.js");
-
+var irc    = require("irc");
+var conf   = require("./config.js");
+var files  = require("./files.js");
+var mailer = require("./mailer.js");
 
 // Init
 
 files.init();
+mailer.init();
 
 // Connection
 
@@ -50,14 +51,16 @@ client.on("message", function(nick, to, text) {
   client.say(nick, "IRC-REPORT v" + require("./package.json").version + " ~ https://github.com/Lesterpig/irc-report");
   client.say(nick, "I'm logging messages and send it daily to registered emails addresses.");
   client.say(nick, "Available commands:");
-  //client.say(nick, "__register <mail>  . . . . . . . . . : register your email address for this channel");
-  //client.say(nick, "__unregister <mail> <token>  . . . . : unsubscribe for this channel, providing token given in your mails");
-  client.say(nick, "__help'  . . . . . . . . . . . . . . : display this text");
+  // TODO : client.say(nick, "__register <mail>  . . . . . . . . . : register your email address for this channel");
+  // TODO : client.say(nick, "__unregister <mail> <token>  . . . . : unsubscribe for this channel, providing token given in your mails");
+  client.say(nick, "__help  . . . . . . . . . . . . . . : display this text");
 
 });
 
 client.on("message#", function(nick, to, text) {
-  files.append(to, nick, text);
+  if(!isCommand(text)) {
+    files.append(to, nick, text);
+  }
 });
 
 // Disconnection

@@ -2,6 +2,7 @@ var fs     = require("fs")
 var path   = require("path");
 var moment = require("moment");
 var conf   = require("./config.js");
+var mailer = require("./mailer.js");
 
 var tmp  = path.join(__dirname, "tmp");
 var cron = path.join(tmp, ".cron");
@@ -58,10 +59,12 @@ module.exports = {
       return; // TODO add hour configuration
     }
 
+    var oldDomain = this.currentDomain;
     this.saveDomain();
+
     conf.channels.forEach(function(channel) {
       var filename = getFilename(channel);
-      (function(filename) {
+      (function(filename, channel) {
         fs.exists(filename, function(exists) {
           if(!exists) {
             return;
@@ -69,16 +72,15 @@ module.exports = {
           fs.rename(filename, filename + ".bak", function(err) {
             fs.readFile(filename + ".bak", {encoding: "utf8"}, function(err, data) {
               fs.unlink(filename + ".bak");
-              // TODO send mail with "data" content
+              mailer.send(channel, moment(oldDomain, "YYYYMMDD").format("ll"), data, conf.mail.to);
             });
           });
         });
-      })(filename);
+      })(filename, channel);
     });
 
 
-  }
-
+  },
 
 }
 
